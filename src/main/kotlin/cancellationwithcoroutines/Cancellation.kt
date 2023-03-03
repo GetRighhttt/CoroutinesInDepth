@@ -47,7 +47,11 @@ fun main() = runBlocking {
         } catch (e: CancellationException) {
             println("Exception caught safely.")
         } finally {
-            println("Finally block.")
+            withContext(NonCancellable) {
+                println("job: I'm running finally")
+                delay(1000L)
+                println("job: And I've just delayed for 1 sec because I'm non-cancellable")
+            }
         }
     }
 
