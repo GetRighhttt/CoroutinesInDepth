@@ -46,6 +46,8 @@ fun main() = runBlocking {
             }
         } catch (e: CancellationException) {
             println("Exception caught safely.")
+        } finally {
+            println("Finally block.")
         }
     }
 
