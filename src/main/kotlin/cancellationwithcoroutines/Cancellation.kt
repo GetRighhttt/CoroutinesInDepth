@@ -52,7 +52,8 @@ fun main() = runBlocking {
     }
 
     delay(5)
-    job2.cancelAndJoin()
+    job2.cancel("My own crash message.")
+    job2.join()
 
     println("\nEnd of main program: ${Thread.currentThread().name}")
 
