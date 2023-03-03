@@ -36,11 +36,16 @@ fun main() = runBlocking {
     print("\n")
 
     val job2: Job = launch(Dispatchers.Default) {
-        for (i in 0..500) {
-            if (!isActive) {
-                break
-            } // another way to make coroutine cooperative
-            print(" $i ")
+        // try catch block for cancellation exception handling with coroutines.
+        try {
+            for (i in 0..500) {
+                if (!isActive) {
+                    break
+                } // another way to make coroutine cooperative
+                print(" $i ")
+            }
+        } catch (e: CancellationException) {
+            println("Exception caught safely.")
         }
     }
 
