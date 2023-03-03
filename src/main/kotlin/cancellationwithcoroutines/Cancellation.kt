@@ -21,16 +21,31 @@ fun main() = runBlocking {
      * Must invoke/use a suspending function that checks for cancellation - delay(), withContext(), etc.
      * in the coroutine.
      *
+     * We can also use the boolean isActive flag to check if the cancellation status of the coroutine.
      */
     val job: Job = launch {
         for (i in 0..500) {
             print(" $i ")
-            delay(50)
+            yield() // executes very fast, and makes coroutine cooperative.
         }
     }
 
-    delay(500)
-    job.cancel() // cancels the coroutine.
+    delay(7)
+    job.cancelAndJoin() // cancels the coroutine.
+
+    print("\n")
+
+    val job2: Job = launch(Dispatchers.Default) {
+        for (i in 0..500) {
+            if (!isActive) {
+                break
+            } // another way to make coroutine cooperative
+            print(" $i ")
+        }
+    }
+
+    delay(5)
+    job2.cancelAndJoin()
 
     println("\nEnd of main program: ${Thread.currentThread().name}")
 
